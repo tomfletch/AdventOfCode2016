@@ -1,0 +1,19 @@
+{
+  "name": "2016",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "copyfiles": "cp -r src dist",
+    "build": "npm run clean && npm run copyfiles && tsc",
+    "start": "npm run build && node dist/run.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.8.7"
+  }
+}
