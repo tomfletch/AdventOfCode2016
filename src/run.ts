@@ -1,20 +1,26 @@
-import { day01 } from "./01/day01.js";
+import { day01 } from "./01/day01.js"
+import { day02 } from "./02/day02.js"
 
-console.clear();
+console.clear()
 
-const day = parseInt(process.argv[2]!);
-const part = parseInt(process.argv[3]!);
+const day = parseInt(process.argv[2]!)
+const part = parseInt(process.argv[3]!)
 
-const DAY_OBJECTS = [day01];
+type Day = {
+  part1: () => void
+  part2: () => void
+}
 
-const dayObject = DAY_OBJECTS[day - 1];
+const DAY_OBJECTS: Day[] = [day01, day02]
+
+const dayObject = DAY_OBJECTS[day - 1]
 
 if (!dayObject) {
-  throw new Error("Could not find day");
+  throw new Error("Could not find day")
 }
 
 if (part !== 2) {
-  dayObject.part1();
+  dayObject.part1()
 } else {
-  dayObject.part2();
+  dayObject.part2()
 }
