@@ -1,5 +1,7 @@
 import fs from "fs"
 
+const LETTERS = "abcdefghijklmnopqrstuvwxyz"
+
 type Room = {
   encryptedName: string
   sectorId: number
@@ -13,7 +15,27 @@ const part1 = () => {
   console.log(sectorSum)
 }
 
-const part2 = () => {}
+const part2 = () => {
+  const rooms = readRooms()
+  const validRooms = rooms.filter(isRoomValid)
+
+  validRooms.forEach((room) => {
+    const decodedName = decodeRoomName(room)
+    console.log(room.sectorId, decodedName)
+  })
+}
+
+const decodeRoomName = (room: Room) => {
+  const { encryptedName, sectorId } = room
+
+  const roomNameChars = encryptedName.split("").map((char) => {
+    if (char === "-") return " "
+    const newIndex = (LETTERS.indexOf(char) + sectorId) % LETTERS.length
+    return LETTERS[newIndex]
+  })
+
+  return roomNameChars.join("")
+}
 
 const readRooms = (): Room[] => {
   const filepath = new URL("./input.txt", import.meta.url).pathname
