@@ -1,5 +1,6 @@
 import { day01 } from "./01/day01.js"
 import { day02 } from "./02/day02.js"
+import { day03 } from "./03/day03.js"
 
 console.clear()
 
@@ -11,7 +12,7 @@ type Day = {
   part2: () => void
 }
 
-const DAY_OBJECTS: Day[] = [day01, day02]
+const DAY_OBJECTS: Day[] = [day01, day02, day03]
 
 const dayObject = DAY_OBJECTS[day - 1]
 
