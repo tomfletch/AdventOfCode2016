@@ -7,16 +7,25 @@ type Step = {
   distance: number
 }
 
-type Vector = {
+class Vector {
   x: number
   y: number
+
+  constructor(x: number, y: number) {
+    this.x = x
+    this.y = y
+  }
+
+  manhattanDist(): number {
+    return Math.abs(this.x) + Math.abs(this.y)
+  }
 }
 
 const DIRECTIONS = [
-  { x: 0, y: 1 },
-  { x: 1, y: 0 },
-  { x: 0, y: -1 },
-  { x: -1, y: 0 },
+  new Vector(0, 1),
+  new Vector(1, 0),
+  new Vector(0, -1),
+  new Vector(-1, 0),
 ] satisfies Vector[]
 
 class Character {
@@ -24,7 +33,7 @@ class Character {
   private directionIndex: number
 
   constructor() {
-    this.location = { x: 0, y: 0 }
+    this.location = new Vector(0, 0)
     this.directionIndex = 0
   }
 
@@ -40,7 +49,7 @@ class Character {
   }
 
   manhattanDist(): number {
-    return Math.abs(this.location.x) + Math.abs(this.location.y)
+    return this.location.manhattanDist()
   }
 
   getPosition(): Vector {
