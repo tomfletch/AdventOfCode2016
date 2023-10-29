@@ -19,48 +19,73 @@ const DIRECTIONS = [
   { x: -1, y: 0 },
 ] satisfies Vector[]
 
+class Character {
+  private location: Vector
+  private directionIndex: number
+
+  constructor() {
+    this.location = { x: 0, y: 0 }
+    this.directionIndex = 0
+  }
+
+  turn(turn: Turn) {
+    const turnDiff = turn === "L" ? 3 : 1
+    this.directionIndex = (this.directionIndex + turnDiff) % 4
+  }
+
+  move(distance: number) {
+    const direction = DIRECTIONS[this.directionIndex] as Vector
+    this.location.x += direction.x * distance
+    this.location.y += direction.y * distance
+  }
+
+  manhattanDist(): number {
+    return Math.abs(this.location.x) + Math.abs(this.location.y)
+  }
+
+  getPosition(): Vector {
+    return this.location
+  }
+}
+
 const part1 = () => {
   const steps = readSteps()
 
-  let directionIndex = 0
-  let x = 0
-  let y = 0
+  const character = new Character()
 
   for (const step of steps) {
-    directionIndex = turn(directionIndex, step.turn)
-    const direction = DIRECTIONS[directionIndex] as Vector
-    x += direction.x * step.distance
-    y += direction.y * step.distance
+    character.turn(step.turn)
+    character.move(step.distance)
   }
 
-  const dist = manhattanDist(x, y)
+  const dist = character.manhattanDist()
   console.log("Distance: ", dist)
 }
 
 const part2 = () => {
   const steps = readSteps()
-  const { x, y } = getFirstRepeatedLocation(steps)
+  const character = new Character()
+  moveToFirstRepeatedLocation(character, steps)
 
-  const dist = manhattanDist(x, y)
+  const dist = character.manhattanDist()
   console.log("Distance: ", dist)
 }
 
-const getFirstRepeatedLocation = (steps: Step[]): Vector => {
+const moveToFirstRepeatedLocation = (
+  character: Character,
+  steps: Step[]
+): Vector => {
   const visited = new Set<string>()
-
-  let directionIndex = 0
-  let location = { x: 0, y: 0 }
 
   visited.add("0,0")
 
   for (const step of steps) {
-    directionIndex = turn(directionIndex, step.turn)
-    const direction = DIRECTIONS[directionIndex] as Vector
+    character.turn(step.turn)
 
     for (let d = 0; d < step.distance; d++) {
-      location.x += direction.x
-      location.y += direction.y
+      character.move(1)
 
+      const location = character.getPosition()
       const pos = `${location.x},${location.y}`
       if (visited.has(pos)) {
         return location
@@ -80,17 +105,6 @@ const readSteps = (): Step[] => {
     turn: step[0] as Turn,
     distance: parseInt(step.substring(1)),
   }))
-}
-
-const turn = (direction: number, turn: Turn): number => {
-  if (turn === "L") {
-    return (direction + 3) % 4
-  }
-  return (direction + 1) % 4
-}
-
-const manhattanDist = (x: number, y: number): number => {
-  return Math.abs(x) + Math.abs(y)
 }
 
 export const day01 = { part1, part2 }
