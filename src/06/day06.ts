@@ -41,20 +41,25 @@ const part2 = () => {
       letterCounts[letter] = (letterCounts[letter] || 0) + 1
     }
 
-    let minLetter = ""
-    let minCount = Infinity
-    for (const letter in letterCounts) {
-      const letterCount = letterCounts[letter]!
-      if (letterCount < minCount) {
-        minLetter = letter
-        minCount = letterCount
-      }
-    }
-
+    const minLetter = getMinCountLetter(letterCounts)
     message.push(minLetter)
   }
 
   console.log(message.join(""))
+}
+
+const getMinCountLetter = (counts: Record<string, number>): string => {
+  let minLetter = ""
+  let minCount = Infinity
+  for (const letter in counts) {
+    const letterCount = counts[letter]!
+    if (letterCount < minCount) {
+      minLetter = letter
+      minCount = letterCount
+    }
+  }
+
+  return minLetter
 }
 
 const readLines = () => {
