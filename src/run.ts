@@ -3,6 +3,7 @@ import { day02 } from "./02/day02.js"
 import { day03 } from "./03/day03.js"
 import { day04 } from "./04/day04.js"
 import { day05 } from "./05/day05.js"
+import { day06 } from "./06/day06.js"
 
 console.clear()
 
@@ -14,7 +15,7 @@ type Day = {
   part2: () => void
 }
 
-const DAY_OBJECTS: Day[] = [day01, day02, day03, day04, day05]
+const DAY_OBJECTS: Day[] = [day01, day02, day03, day04, day05, day06]
 
 const dayObject = DAY_OBJECTS[day - 1]
 
