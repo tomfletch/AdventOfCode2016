@@ -7,6 +7,7 @@ import { day06 } from "./06/day06.js"
 import { day07 } from "./07/day07.js"
 import { day08 } from "./08/day08.js"
 import { day09 } from "./09/day09.js"
+import { day10 } from "./10/day10.js"
 
 console.clear()
 
@@ -28,6 +29,7 @@ const DAY_OBJECTS: Day[] = [
   day07,
   day08,
   day09,
+  day10,
 ]
 
 const dayObject = DAY_OBJECTS[day - 1]
