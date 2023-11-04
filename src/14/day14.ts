@@ -4,12 +4,14 @@ const SALT = "qzyelonm"
 
 class KeyGenerator {
   private salt: string
+  private useKeyStretching: boolean
   private hashes: Record<number, string> = {}
   private currentIndex: number
 
-  constructor(salt: string) {
+  constructor(salt: string, useKeyStretching: boolean) {
     this.salt = salt
     this.currentIndex = -1
+    this.useKeyStretching = useKeyStretching
   }
 
   getNextKeyIndex(): number {
@@ -85,12 +87,20 @@ class KeyGenerator {
   }
 
   private generateHash(i: number): string {
-    return md5(`${SALT}${i}`).toLowerCase()
+    let hash = md5(`${this.salt}${i}`).toLowerCase()
+
+    if (this.useKeyStretching) {
+      for (let i = 0; i < 2016; i++) {
+        hash = md5(hash).toLowerCase()
+      }
+    }
+
+    return hash
   }
 }
 
 const part1 = () => {
-  const keyGenerator = new KeyGenerator(SALT)
+  const keyGenerator = new KeyGenerator(SALT, false)
 
   let index = 0
 
@@ -101,6 +111,17 @@ const part1 = () => {
   console.log(index)
 }
 
-const part2 = () => {}
+const part2 = () => {
+  const keyGenerator = new KeyGenerator(SALT, true)
+
+  let index = 0
+
+  for (let i = 0; i < 64; i++) {
+    console.log("i:", i)
+    index = keyGenerator.getNextKeyIndex()
+  }
+
+  console.log(index)
+}
 
 export const day14 = { part1, part2 }
