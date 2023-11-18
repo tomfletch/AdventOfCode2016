@@ -10,6 +10,12 @@ const part1 = () => {
   console.log(computer.getRegisterValue("a"))
 }
 
-const part2 = () => {}
+const part2 = () => {
+  const instructions = readInstructions(filepath)
+  const computer = new Computer()
+  computer.setRegisterValue("a", 12)
+  computer.run(instructions)
+  console.log(computer.getRegisterValue("a"))
+}
 
 export const day23 = { part1, part2 }
