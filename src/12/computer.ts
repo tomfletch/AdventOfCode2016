@@ -5,6 +5,9 @@ export class Computer {
   private ip: number
   private instructions: Instruction[]
 
+  private output: number[]
+  private previousStates: Set<string>
+
   private static TOGGLE_COMMAND_LOOKUP: { [key: string]: string } = {
     inc: "dec",
     dec: "inc",
@@ -17,6 +20,8 @@ export class Computer {
     this.registers = { a: 0, b: 0, c: 0, d: 0 }
     this.ip = 0
     this.instructions = []
+    this.output = []
+    this.previousStates = new Set()
   }
 
   run(instructions: Instruction[]) {
@@ -25,7 +30,26 @@ export class Computer {
       const instruction = this.instructions[this.ip]!
       this.doInstruction(instruction)
       this.ip += 1
+
+      if (this.isInfiniteLoop()) {
+        // console.log("Infinite loop detected")
+        return
+      }
     }
+  }
+
+  private isInfiniteLoop(): boolean {
+    const currentState = JSON.stringify({
+      registers: this.registers,
+      ip: this.ip,
+    })
+
+    if (this.previousStates.has(currentState)) {
+      return true
+    }
+
+    this.previousStates.add(currentState)
+    return false
   }
 
   setRegisterValue(register: string, value: number) {
@@ -53,7 +77,7 @@ export class Computer {
         this.registers[param1] -= 1
         return
       case "jnz": {
-        if (!param2) {
+        if (typeof param2 === "undefined") {
           throw new Error("jnz command requires 2 params")
         }
         const value1 = this.getValue(param1)
@@ -74,9 +98,18 @@ export class Computer {
         }
         return
       }
+      case "out": {
+        const value = this.getValue(param1)
+        this.output.push(value)
+        return
+      }
     }
 
     throw new Error(`command "${command}" not found`)
+  }
+
+  getOutput(): number[] {
+    return this.output
   }
 
   private getValue(param?: string | number): number {
