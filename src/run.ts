@@ -21,6 +21,7 @@ import { day20 } from "./20/day20.js"
 import { day21 } from "./21/day21.js"
 import { day22 } from "./22/day22.js"
 import { day23 } from "./23/day23.js"
+import { day24 } from "./24/day24.js"
 
 console.clear()
 
@@ -56,6 +57,7 @@ const DAY_OBJECTS: Day[] = [
   day21,
   day22,
   day23,
+  day24,
 ]
 
 const dayObject = DAY_OBJECTS[day - 1]
